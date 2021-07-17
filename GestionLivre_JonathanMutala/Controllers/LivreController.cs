@@ -7,15 +7,18 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GestionLivre_JonathanMutala.Data;
 using GestionLivre_JonathanMutala.Models;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Data.SqlClient;
 
 namespace GestionLivre_JonathanMutala.Controllers
 {
     public class LivreController : Controller
     {
-        private readonly GestionLivre_JonathanMutalaContext _context;
+        private readonly IConfiguration Myconfiguration;
 
-        public LivreController()
+        public LivreController(IConfiguration configuration)
         {
+            this.Myconfiguration = configuration;
         }
 
         // GET: Livre
@@ -41,14 +44,21 @@ namespace GestionLivre_JonathanMutala.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                   
-                }
-                catch (Exception e)
-                {
-                   
-                }
+                
+                    using(SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+                    {
+                        sqlConnection.Open();
+                        SqlCommand sqlcmd = new SqlCommand("LivreAddOrEdit", sqlConnection);
+                        sqlcmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        sqlcmd.Parameters.AddWithValue("IDLivre", livreModel.IDLivre);
+                        sqlcmd.Parameters.AddWithValue("Titre", livreModel.TitreLivre);
+                        sqlcmd.Parameters.AddWithValue("Auteur", livreModel.AuteurLivre);
+                        sqlcmd.Parameters.AddWithValue("DatePublication", livreModel.DatePublicationLivre);
+                        sqlcmd.ExecuteNonQuery();
+
+                    }
+                    
+                
                 return RedirectToAction(nameof(Index));
             }
             return View(livreModel);
