@@ -1,0 +1,44 @@
+﻿@model GestionLivre_JonathanMutala.Models.LivreModel
+
+@{
+    ViewData["Title"] = Model.IDLivre == 0 ? "Créer un livre" : "Mettre à jour un livre" ;
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<h4>LivreModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOrEdit" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="IDLivre" />
+            <div class="form-group">
+                <label asp-for="TitreLivre" class="control-label"></label>
+                <input asp-for="TitreLivre" class="form-control" />
+                <span asp-validation-for="TitreLivre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AuteurLivre" class="control-label"></label>
+                <input asp-for="AuteurLivre" class="form-control" />
+                <span asp-validation-for="AuteurLivre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DatePublicationLivre" class="control-label"></label>
+                <input asp-for="DatePublicationLivre" class="form-control" />
+                <span asp-validation-for="DatePublicationLivre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Valider" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
