@@ -9,6 +9,7 @@ using GestionLivre_JonathanMutala.Data;
 using GestionLivre_JonathanMutala.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
+using System.Data; 
 
 namespace GestionLivre_JonathanMutala.Controllers
 {
@@ -23,8 +24,16 @@ namespace GestionLivre_JonathanMutala.Controllers
 
         // GET: Livre
         public IActionResult Index()
-        { 
-            return View();
+        {
+            DataTable dataTable = new DataTable(); 
+            using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+            {
+                sqlConnection.Open();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("AllLivreView", sqlConnection);
+                sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                sqlDataAdapter.Fill(dataTable); 
+            }
+            return View(dataTable);
         }
 
         // GET: Livre/Edit/5
@@ -44,8 +53,9 @@ namespace GestionLivre_JonathanMutala.Controllers
 
             if (ModelState.IsValid)
             {
-                
-                    using(SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+                try
+                {
+                    using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
                     {
                         sqlConnection.Open();
                         SqlCommand sqlcmd = new SqlCommand("LivreAddOrEdit", sqlConnection);
@@ -57,6 +67,13 @@ namespace GestionLivre_JonathanMutala.Controllers
                         sqlcmd.ExecuteNonQuery();
 
                     }
+
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e); 
+                }
+                   
                     
                 
                 return RedirectToAction(nameof(Index));
