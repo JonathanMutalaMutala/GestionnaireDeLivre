@@ -40,7 +40,7 @@
                 @Model.Rows[i]["DatePublication"]
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@Model.Rows[i]["IDLivre"]">Edit</a> |
+                <a asp-action="AddOrEdit" asp-route-id="@Model.Rows[i]["IDLivre"]">Edit</a> |
                 <a asp-action="Delete" asp-route-id="@Model.Rows[i]["IDLivre"]">Delete</a>
             </td>
         </tr>

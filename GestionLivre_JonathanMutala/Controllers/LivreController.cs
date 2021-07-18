@@ -36,10 +36,13 @@ namespace GestionLivre_JonathanMutala.Controllers
             return View(dataTable);
         }
 
-        // GET: Livre/Edit/5
+        // GET: Livre/AddOrEdit 
+        
         public IActionResult AddOrEdit(int? id)
         {
-            LivreModel livreModel = new LivreModel(); 
+            LivreModel livreModel = new LivreModel();
+            if (id > 0)
+                livreModel = GetLivreByID(id); 
             return View(livreModel);
         }
 
@@ -94,6 +97,28 @@ namespace GestionLivre_JonathanMutala.Controllers
         {
             return RedirectToAction(nameof(Index));
         }
-
+        [NonAction]
+        public LivreModel GetLivreByID(int ? id)
+        {
+            LivreModel livreModel = new LivreModel();
+           
+            using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+            {
+                DataTable dataTable = new DataTable();
+                sqlConnection.Open();
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("LivreViewByID", sqlConnection);
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("IDLivre", id); 
+                sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                sqlDataAdapter.Fill(dataTable);
+                if(dataTable.Rows.Count == 1)
+                {
+                    livreModel.IDLivre = Convert.ToInt32(dataTable.Rows[0]["IDLivre"].ToString());
+                    livreModel.TitreLivre = dataTable.Rows[0]["Titre"].ToString();
+                    livreModel.AuteurLivre = dataTable.Rows[0]["Auteur"].ToString();
+                    livreModel.DatePublicationLivre =Convert.ToDateTime(dataTable.Rows[0]["DatePublication"]);
+                }
+                return livreModel; 
+            }
+        }
     }
 }
