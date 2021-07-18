@@ -87,7 +87,9 @@ namespace GestionLivre_JonathanMutala.Controllers
         // GET: Livre/Delete/5
         public IActionResult Delete(int? id)
         {
-            return View();
+            LivreModel livreModel = GetLivreByID(id); 
+
+            return View(livreModel);
         }
 
         // POST: Livre/Delete/5
@@ -95,8 +97,18 @@ namespace GestionLivre_JonathanMutala.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
+            using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlcmd = new SqlCommand("DeleteLivreByID", sqlConnection);
+                sqlcmd.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlcmd.Parameters.AddWithValue("IDLivre", id);
+                sqlcmd.ExecuteNonQuery();
+
+            }
             return RedirectToAction(nameof(Index));
         }
+
         [NonAction]
         public LivreModel GetLivreByID(int ? id)
         {

@@ -6,44 +6,50 @@
 
 <h1>@ViewData["Title"]</h1>
 
-<p>
-    <a asp-action="Create">Create a new</a>
-</p>
 
 <table class="table table-bordered">
     <thead class="thead-light">
-        <tr>
+        <tr style="text-align:center">
             <th>
-               Titre du livre
+                Titre 
             </th>
             <th>
-                Auteur du livre
+                Auteur 
             </th>
             <th>
-                Date de publication du livre
+                Date de publication 
             </th>
             <th>
-                <a asp-action="AddOrEdit">Create a new</a>
+               Modifier ou supprimer 
             </th>
         </tr>
     </thead>
     <tbody>
-@for(int i = 0; i < Model.Rows.Count;i++) {
-        <tr>
-            <td>
-               @Model.Rows[i]["Titre"]
-            </td>
-            <td>
-               @Model.Rows[i]["Auteur"]
-            </td>
-            <td>
-                @Model.Rows[i]["DatePublication"]
-            </td>
-            <td>
-                <a asp-action="AddOrEdit" asp-route-id="@Model.Rows[i]["IDLivre"]">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@Model.Rows[i]["IDLivre"]">Delete</a>
-            </td>
-        </tr>
-}
+        @for (int i = 0; i < Model.Rows.Count; i++)
+        {
+            <tr style="text-align:center" >
+                <td>
+                    @Model.Rows[i]["Titre"]
+                </td>
+                <td>
+                    @Model.Rows[i]["Auteur"]
+                </td>
+                <td>
+                    @Model.Rows[i]["DatePublication"]
+                </td>
+                <td>
+                    <a asp-action="AddOrEdit" asp-route-id="@Model.Rows[i]["IDLivre"]">
+                                <input type="button" value="Modifier" class="btn btn-secondary" />
+                        </a> 
+                    <a asp-action="Delete" asp-route-id="@Model.Rows[i]["IDLivre"]">
+                        <input type="button" value="Supprimer" class="btn btn-danger" />
+                    </a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<a asp-action="AddOrEdit">
+    <input type="button" value="Ajouter un nouveau Livre" class="btn btn-primary"/>
+</a>

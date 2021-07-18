@@ -1,15 +1,14 @@
 ﻿@model GestionLivre_JonathanMutala.Models.LivreModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Supprimer un Livre";
 }
 
-<h1>Delete</h1>
+<h1>@ViewData["Title"] </h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3></h3>
 <div>
-    <h4>LivreModel</h4>
-    <hr />
+        <hr />
     <dl class="row">
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.TitreLivre)
@@ -33,7 +32,9 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="IDLivre" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Supprimer" class="btn btn-danger" /> 
+        <a asp-action="Index">
+            <input type="button" value="Retour à la liste de livre" class="btn btn-primary" />
+        </a>
     </form>
 </div>
