@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using GestionLivre_JonathanMutala.Data;
+using GestionLivre_JonathanMutala.Models; 
 
 namespace GestionLivre_JonathanMutala
 {
@@ -24,7 +25,11 @@ namespace GestionLivre_JonathanMutala
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<UserContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MyConnectionString"))); 
             services.AddControllersWithViews();
+            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +46,7 @@ namespace GestionLivre_JonathanMutala
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
