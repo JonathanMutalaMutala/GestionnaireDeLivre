@@ -9,6 +9,7 @@ namespace GestionLivre_JonathanMutala.Data
 {
     public class GestionLivre_JonathanMutalaContext : DbContext
     {
+        
         public GestionLivre_JonathanMutalaContext (DbContextOptions<GestionLivre_JonathanMutalaContext> options)
             : base(options)
         {

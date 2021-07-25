@@ -1,0 +1,42 @@
+﻿@model GestionLivre_JonathanMutala.Models.UserModel
+
+@{
+    ViewData["Title"] = "Connexion";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h4>Entrez le UserName et le password pour pouvoir se connecter</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="LoginValidation">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="UserName" class="control-label"></label>
+                <input asp-for="UserName" class="form-control" id="usernameInput" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" id="passwordInput" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Se connecter" class="btn btn-success" />
+            </div>
+            <div class="form-group">
+                <a asp-action="Create">
+                    <input type="submit" value="Creer un compte" class="btn btn-primary" />
+                </a>
+                
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
