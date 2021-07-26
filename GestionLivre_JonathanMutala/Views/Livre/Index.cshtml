@@ -4,52 +4,41 @@
     ViewData["Title"] = "Liste de livre";
 }
 
-<h1>@ViewData["Title"]</h1>
 
+<a asp-action="AddOrEdit" >
+    <input type="button" value="Ajouter un nouveau Livre" class="btn btn-primary float-right row " />
+</a>
+<br/>
+<br />
 
-<table class="table table-bordered">
-    <thead class="thead-light">
-        <tr style="text-align:center">
-            <th>
-                Titre 
-            </th>
-            <th>
-                Auteur 
-            </th>
-            <th>
-                Date de publication 
-            </th>
-            <th>
-               Modifier ou supprimer 
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @for (int i = 0; i < Model.Rows.Count; i++)
-        {
-            <tr style="text-align:center" >
-                <td>
-                    @Model.Rows[i]["Titre"]
-                </td>
-                <td>
-                    @Model.Rows[i]["Auteur"]
-                </td>
-                <td>
-                    @Model.Rows[i]["DatePublication"]
-                </td>
-                <td>
+<div class="row">
+    @for (int i = 0; i < Model.Rows.Count; i++)
+    {
+
+        <div class="col-4" style="margin-bottom:  10px">
+            <div class="card">
+                <img class="card-img-top" src="https://www.conseiller.ca/wp-content/uploads/sites/4/2019/04/livre-800x600.jpg" alt="Card image" />
+                <div class="card-body" style="text-align  :center">
+                    <h4 class="card-title">  @Model.Rows[i]["Titre"]</h4>
+                    <hr />
+                    <h5 class="card-subtitle">Auteur : @Model.Rows[i]["Auteur"] </h5>
+                    <h5 class="card-text"> Date de Publication :  @Model.Rows[i]["DatePublication"]    </h5>
                     <a asp-action="AddOrEdit" asp-route-id="@Model.Rows[i]["IDLivre"]">
-                                <input type="button" value="Modifier" class="btn btn-secondary" />
-                        </a> 
+                        <input type="button" value="Modifier" class="btn btn-secondary" />
+                    </a>
                     <a asp-action="Delete" asp-route-id="@Model.Rows[i]["IDLivre"]">
                         <input type="button" value="Supprimer" class="btn btn-danger" />
                     </a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                </div>
+            </div>
 
-<a asp-action="AddOrEdit">
-    <input type="button" value="Ajouter un nouveau Livre" class="btn btn-primary"/>
-</a>
+        </div>
+
+
+        <br />
+    }
+
+
+
+
+</div>
