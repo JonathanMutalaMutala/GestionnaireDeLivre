@@ -14,6 +14,8 @@ namespace GestionLivre_JonathanMutala.Controllers
     public class UserController : Controller
     {
         private readonly IConfiguration Myconfiguration;
+        public int val;
+
 
         public UserController( IConfiguration iConfiguration)
         {
@@ -46,14 +48,20 @@ namespace GestionLivre_JonathanMutala.Controllers
                     sqlcmd.Parameters.AddWithValue("Prenom", userModel.Prenom);
                     sqlcmd.Parameters.AddWithValue("UserName", userModel.UserName);
                     sqlcmd.Parameters.AddWithValue("Password", userModel.Password);
-                    Console.WriteLine(sqlcmd.ToString());
                     sqlcmd.ExecuteNonQuery();
+                    sqlConnection.Close(); 
                 }
+               
                 return RedirectToAction("Index", "Livre");
             }
-           
-
             return View();
+            
+
+        }
+        [NonAction]
+        public int GetCurrentUserID(int val)
+        {
+            return val; 
         }
     }
 }

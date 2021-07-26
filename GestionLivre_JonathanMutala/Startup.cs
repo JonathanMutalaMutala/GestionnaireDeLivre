@@ -53,7 +53,7 @@ namespace GestionLivre_JonathanMutala
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Livre}/{action=Index}/{id?}");
+                    pattern: "{controller=Login}/{action=LoginValidation}/{id?}");
             });
         }
     }
