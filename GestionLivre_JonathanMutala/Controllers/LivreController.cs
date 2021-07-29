@@ -11,27 +11,32 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Data.SqlClient;
 using System.Data;
 using GestionLivre_JonathanMutala.Controllers;
-using GestionLivre_JonathanMutala.Controllers; 
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace GestionLivre_JonathanMutala.Controllers
 {
     public class LivreController : Controller
     {
         private readonly IConfiguration Myconfiguration;
-        public LivreController(IConfiguration configuration)
+        public LivreController(IConfiguration configuration,IWebHostEnvironment hostEnvironment)
         {
             this.Myconfiguration = configuration;
         }
-
+      
+        
         // GET: Livre
         public IActionResult Index()
         {
+           
             DataTable dataTable = new DataTable();
             using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
             {
                 sqlConnection.Open();
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("AllLivreView", sqlConnection);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("AllLivreView",sqlConnection); 
                 sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+                // Affichage de livre selon le user connecté
+                //SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT IDLivre,Titre,Auteur,DatePublication FROM Livre INNER JOIN Livre_User_Tab ON id_livre_FK = IDLivre INNER JOIN UserTab ON id_user_FK = UserID where UserID = '" + LoginController.idUser + "'", sqlConnection);
                 sqlDataAdapter.Fill(dataTable);
             }
             return View(dataTable);
@@ -60,13 +65,16 @@ namespace GestionLivre_JonathanMutala.Controllers
                     using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
                     {
                         sqlConnection.Open();
+                    
                         SqlCommand sqlcmd = new SqlCommand("LivreAddOrEdit", sqlConnection);
-                        sqlcmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        sqlcmd.Parameters.AddWithValue("IDLivre", livreModel.IDLivre);
-                        sqlcmd.Parameters.AddWithValue("Titre", livreModel.TitreLivre);
-                        sqlcmd.Parameters.AddWithValue("Auteur", livreModel.AuteurLivre);
-                        sqlcmd.Parameters.AddWithValue("DatePublication", livreModel.DatePublicationLivre.ToShortDateString());
-                        sqlcmd.ExecuteNonQuery();
+                    
+                     sqlcmd.CommandType = System.Data.CommandType.StoredProcedure;
+                     sqlcmd.Parameters.AddWithValue("IDLivre", livreModel.IDLivre);
+                    sqlcmd.Parameters.AddWithValue("Titre", livreModel.TitreLivre);
+                     sqlcmd.Parameters.AddWithValue("Auteur", livreModel.AuteurLivre);
+                     sqlcmd.Parameters.AddWithValue("DatePublication", livreModel.DatePublicationLivre.ToShortDateString());
+                    
+                    sqlcmd.ExecuteNonQuery();
 
                     }
                     
@@ -75,6 +83,29 @@ namespace GestionLivre_JonathanMutala.Controllers
             }
             return View(livreModel);
         }
+        /*
+        public IActionResult getImageFile(LivreModel livreModel)
+        {
+            if(ModelState.IsValid)
+            { 
+            string wwwRoot = iwebHostEnvironment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(livreModel.imageFile.FileName);
+            string fileExtension = Path.GetExtension(livreModel.imageFile.FileName);
+            livreModel.ImagePath = fileName  =  fileName = fileName + DateTime.Now.ToShortDateString() + fileExtension;
+            string path = Path.Combine(wwwRoot + "/Image", fileName); 
+           using (SqlConnection sqlConnection = new SqlConnection(Myconfiguration.GetConnectionString("MyConnectionString")))
+            {
+                sqlConnection.Open();
+                SqlCommand sqlCommand = new SqlCommand("LivreAddOrEdit", sqlConnection);
+                sqlCommand.CommandType = System.Data.CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("ImagePath", livreModel.ImagePath); 
+            }
+            return RedirectToAction(nameof(Index));
+            }
+            return View(livreModel); 
+
+        }
+        */
 
         // GET: Livre/Delete/5
         public IActionResult Delete(int? id)
