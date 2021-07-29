@@ -9,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="AddOrEdit" >
+        <form asp-action="AddOrEdit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="IDLivre" />
             <div class="form-group">
@@ -27,6 +27,10 @@
                 <input asp-for="DatePublicationLivre" class="form-control" />
                 <span asp-validation-for="DatePublicationLivre" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <input asp-for="imageFile"  class="btn  btn-success" />
+            </div>
+
             <div class="form-group">
                 <input type="submit" value="Valider" class="btn  btn-success" />
             </div>

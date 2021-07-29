@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,9 @@ namespace GestionLivre_JonathanMutala.Models
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime DatePublicationLivre { get; set; }
+        
+        public string ImagePath { get; set; }
+        public IFormFile imageFile { get; set; }
 
     }
 }

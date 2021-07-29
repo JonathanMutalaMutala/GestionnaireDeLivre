@@ -9,6 +9,7 @@ using Microsoft.Extensions.Configuration;
 using System.Data;
 using GestionLivre_JonathanMutala.Controllers;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Http;
 
 namespace GestionLivre_JonathanMutala.Controllers
 {
@@ -22,14 +23,12 @@ namespace GestionLivre_JonathanMutala.Controllers
            
             Myconfiguration = iConfiguration;
         }
-
+      public static  int idUser; 
         public LoginController()
         {
         }
-        public string UsernameString;
 
-
-
+        public object Session { get; private set; }
 
         public IActionResult Index()
         {
@@ -52,14 +51,31 @@ namespace GestionLivre_JonathanMutala.Controllers
                 DataTable dataTable = new DataTable();
                 sqlConnection.Open();
                 SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("Validate_User", sqlConnection);
-                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("UserName",userModel.UserName );
-                UsernameString = userModel.UserName;
-                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("Password", userModel.Password);
 
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("UserName",userModel.UserName );
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("Password", userModel.Password);
+                SqlCommand sqlCommand = new SqlCommand("SELECT UserID from UserTab WHERE UserName = '" + userModel.UserName + "'");
+                sqlCommand.Connection = sqlConnection;
+                SqlDataReader reader = sqlCommand.ExecuteReader();
+                if (reader.HasRows)
+                {
+                    while (reader.Read())
+                    {
+                       
+                        idUser =  reader.GetInt32(0);
+                        // reader.GetValue(reader.GetOrdinal("UserID"));
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No rows found.");
+                }
+                
                 sqlDataAdapter.SelectCommand.CommandType = CommandType.StoredProcedure;
+
                 
 
-                if(userModel.UserName == null && userModel.Password == null)
+                if (userModel.UserName == null && userModel.Password == null)
                 {
                     return RedirectToAction("Create", "User");
                 }
@@ -72,7 +88,6 @@ namespace GestionLivre_JonathanMutala.Controllers
                     if (dataTable.Rows.Count < 1)
                     {
                         return RedirectToAction("Create", "User");
-
                     }
                     else
                     {
@@ -85,7 +100,7 @@ namespace GestionLivre_JonathanMutala.Controllers
 
             return View();
         }
-       
 
+       
     }
 }
